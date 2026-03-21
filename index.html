@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Epoch</title>
+    <link rel="icon" type="image/svg+xml" href="/logo.png" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div id="app">
+      <div id="ui">
+        <div id="brand" class="brand" aria-label="Epoch logo">
+          <div class="brandMark"><img src="/logo.png" alt="Epoch Logo" style="width: 100%; height: 100%; object-fit: contain; border-radius: inherit;" /></div>
+          <div class="brandText">
+            <div class="brandTitle">Epoch</div>
+            <div class="brandSubtitle">Time-Travel Puzzle Game</div>
+          </div>
+        </div>
+
+        <canvas id="game" aria-label="Time-travel puzzle platformer"></canvas>
+
+        <div id="hud" class="panel hidden" aria-live="polite">
+          <div class="hud-left">
+            <div class="pill" id="hudLevel">Level 1</div>
+            <div class="pill" id="hudTimeline">Past</div>
+          </div>
+          <div class="hud-right">
+            <div class="pill" id="hudTime">00:00.0</div>
+            <button class="btn ghost" id="btnPause" type="button">Menu</button>
+          </div>
+        </div>
+
+        <div id="screenMenu" class="screen">
+          <div class="card">
+            <div class="title">Epoch</div>
+            <div class="subtitle">Switch timelines to solve platform puzzles.</div>
+            <div class="menuGrid">
+              <button class="btn primary" id="btnPlay" type="button">Play</button>
+              <button class="btn" id="btnLevels" type="button">Level Select</button>
+              <button class="btn" id="btnAbout" type="button">About</button>
+              <button class="btn ghost" id="btnHow" type="button">How to Play</button>
+            </div>
+            <div class="fineprint">
+              Controls: A/D or ←/→, Space to jump, <b>T</b> to time-shift. Mobile: use on-screen controls.
+            </div>
+          </div>
+        </div>
+
+        <div id="screenLevels" class="screen hidden" aria-hidden="true">
+          <div class="card">
+            <div class="title">Level Select</div>
+            <div id="levelButtons" class="levelGrid"></div>
+            <div class="row">
+              <button class="btn ghost" id="btnLevelsBack" type="button">Back</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="screenAbout" class="screen hidden" aria-hidden="true">
+          <div class="card">
+            <div class="title">About Epoch</div>
+            <div class="aboutText">
+              <p>
+                <strong>Epoch</strong> is an atmospheric time-travel puzzle platformer that challenges you to think across dimensions. 
+                By shifting between the <em>Past</em> and the <em>Future</em>, you can manipulate objects, traverse broken bridges, and solve intricate environment puzzles.
+              </p>
+            </div>
+            <div class="row">
+              <button class="btn ghost" id="btnAboutBack" type="button">Back</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="screenHow" class="screen hidden" aria-hidden="true">
+          <div class="card">
+            <div class="title">How to Play</div>
+            <div class="aboutText">
+              <ul>
+                <li><b>Move</b>: A/D or ←/→</li>
+                <li><b>Jump</b>: Space (or the jump button)</li>
+                <li><b>Time Shift</b>: T (or the time button) — past is warm, future is cool</li>
+                <li><b>Puzzles</b>: bridges, trees, switches, and movable boxes can differ per timeline</li>
+              </ul>
+            </div>
+            <div class="row">
+              <button class="btn ghost" id="btnHowBack" type="button">Back</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="screenGameOver" class="screen hidden" aria-hidden="true">
+          <div class="card">
+            <div class="title" id="goTitle">Game Over</div>
+            <div class="aboutText" id="goSubtitle">
+              You fell out of time. Try the level again or return to the menu.
+            </div>
+            <div class="row" style="justify-content: space-between; gap: 10px">
+              <button class="btn ghost" id="btnGoMenu" type="button">Menu</button>
+              <button class="btn primary" id="btnGoRetry" type="button">Retry Level</button>
+            </div>
+          </div>
+        </div>
+
+        <footer id="mainFooter">
+          <div class="footerContent">
+            <div class="copyrightText">
+              &copy; <span id="copyrightYear"></span> Made by Abhay Chaudhary
+            </div>
+          </div>
+        </footer>
+
+        <div id="toast" class="toast hidden"></div>
+      </div>
+
+      <div id="mobileControls" class="mobile hidden" aria-hidden="true">
+        <button class="mBtn" id="mLeft" type="button" aria-label="Move left">◀</button>
+        <button class="mBtn" id="mRight" type="button" aria-label="Move right">▶</button>
+        <button class="mBtn accent" id="mJump" type="button" aria-label="Jump">⤒</button>
+        <button class="mBtn ghost" id="mTime" type="button" aria-label="Time shift">T</button>
+      </div>
+    </div>
+
+    <script type="module" src="./src/main.js"></script>
+  </body>
+</html>
