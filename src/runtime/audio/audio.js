@@ -102,5 +102,12 @@ export function createAudio() {
     }
   };
 
-  return { unlock, play };
+  let _muted = false;
+  const toggleMute = () => {
+    _muted = !_muted;
+    if (master) master.gain.value = _muted ? 0 : 0.22;
+    return _muted;
+  };
+
+  return { unlock, play, toggleMute };
 }

@@ -11,6 +11,7 @@ const STATE = {
   ABOUT: "about",
   HOW: "how",
   PLAYING: "playing",
+  PAUSED: "paused",
   GAMEOVER: "gameover",
 };
 
@@ -198,7 +199,7 @@ export class Game {
     const w = this.canvas.width;
     const h = this.canvas.height;
 
-    if ((this.state === STATE.PLAYING || this.state === STATE.GAMEOVER) && this.world) {
+    if ((this.state === STATE.PLAYING || this.state === STATE.PAUSED || this.state === STATE.GAMEOVER) && this.world) {
       this.renderer.renderWorld(this.world, w, h);
       return;
     }

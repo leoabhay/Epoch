@@ -1,3 +1,4 @@
+import './index.css';
 import { createUI } from "./ui/uimanager.js";
 import { Game } from "./runtime/game.js";
 

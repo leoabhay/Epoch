@@ -1,126 +1,252 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Epoch</title>
-    <link rel="icon" type="image/svg+xml" href="/logo.png" />
-    <link rel="stylesheet" href="./styles.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Epoch | Protocol: Chronos</title>
+    <meta name="description" content="A premium sci-fi time-travel puzzle platformer. Master the shift." />
+    <link rel="icon" type="image/png" href="/logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=Outfit:ital,wght@0,400;0,700;0,900;1,700;1,900&display=swap" rel="stylesheet" />
   </head>
-  <body>
-    <div id="app">
-      <div id="ui">
-        <div id="brand" class="brand" aria-label="Epoch logo">
-          <div class="brandMark"><img src="/logo.png" alt="Epoch Logo" style="width: 100%; height: 100%; object-fit: contain; border-radius: inherit;" /></div>
-          <div class="brandText">
-            <div class="brandTitle">Epoch</div>
-            <div class="brandSubtitle">Time-Travel Puzzle Game</div>
+  <body class="bg-void text-white overflow-hidden select-none touch-none">
+    <div id="app" class="relative w-full h-full flex flex-col items-center justify-center overflow-hidden z-10">
+      
+      <header id="brand" class="fixed top-8 left-8 z-50 flex items-center gap-4 animate-slide-down group" aria-label="Epoch logo">
+        <div class="relative w-14 h-14 rounded-2xl glass-card flex items-center justify-center p-2 hover:border-white/40 transition-all cursor-pointer">
+          <img src="/logo.png" alt="Epoch Logo" class="w-full h-full object-contain brightness-125" />
+          <div class="absolute -z-10 bg-white/10 blur-xl inset-0 rounded-full opacity-0 group-hover:opacity-40 transition-opacity"></div>
+        </div>
+        <div class="flex flex-col">
+          <span class="text-2xl font-extrabold tracking-tighter leading-none group-hover:text-white/100 transition-colors text-white/80">Epoch</span>
+          <span class="text-[9px] uppercase tracking-[0.3em] font-medium text-white/30 leading-none mt-1.5 translate-x-[1px]">Protocol: Chronos</span>
+        </div>
+        <button id="btnMute" class="w-10 h-10 glass-card rounded-xl flex items-center justify-center interactive-btn ml-2 opacity-40 hover:opacity-100 transition-opacity" type="button" title="Toggle Sound">
+          <svg id="muteIcon" class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+        </button>
+      </header>
+
+      <!-- Game Viewport -->
+      <canvas id="game" class="absolute inset-0 z-0 touch-none" aria-label="Time-travel puzzle platformer"></canvas>
+
+      <!-- HUD - Floating HUD -->
+        <div class="fixed top-8 right-8 z-40 hidden animate-slide-down flex gap-2" id="hud" aria-live="polite">
+          <div class="hud-pill flex items-center gap-6 px-7 py-4">
+            <div class="flex flex-col min-w-[45px]">
+              <span class="text-[10px] uppercase tracking-[0.2em] text-white/25 leading-none mb-1.5 font-bold">Stage</span>
+              <span id="hudLevel" class="text-sm font-semibold text-white/90">01</span>
+            </div>
+            <div class="w-px h-8 bg-white/10"></div>
+            <div class="flex flex-col">
+              <span class="text-[10px] uppercase tracking-[0.2em] text-white/25 leading-none mb-1.5 font-bold">Chronos</span>
+              <span id="hudTimeline" class="text-sm font-semibold past-accent">Past</span>
+            </div>
+            <div class="w-px h-8 bg-white/10"></div>
+            <div class="flex flex-col min-w-[85px] items-end">
+              <span class="text-[10px] uppercase tracking-[0.2em] text-white/25 leading-none mb-1.5 font-bold">Elapsed</span>
+              <span id="hudTime" class="text-sm font-mono font-medium text-white/90 tabular-nums">00:00.0</span>
+            </div>
+          </div>
+          <div class="flex flex-col gap-2">
+            <button id="btnPause" class="w-12 h-12 glass-card flex items-center justify-center rounded-xl interactive-btn" type="button" title="Pause">
+              <svg class="w-5 h-5 text-white/60" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+            </button>
+            <button id="btnReset" class="w-12 h-12 glass-card flex items-center justify-center rounded-xl interactive-btn" type="button" title="Restart Level">
+              <svg class="w-5 h-5 text-white/60" fill="currentColor" viewBox="0 0 24 24"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+            </button>
           </div>
         </div>
 
-        <canvas id="game" aria-label="Time-travel puzzle platformer"></canvas>
+      <!-- UI Screens Container -->
+      <main id="ui-screens" class="relative z-30 w-full flex flex-col items-center">
+        
+        <!-- Main Menu -->
+        <section id="screenMenu" class="screen w-full max-w-xl px-10 text-center animate-slide-down" aria-hidden="false">
+          <div class="glass-card p-14 rounded-[3.5rem] border-white/10 shadow-[0_0_100px_rgba(0,0,0,0.5)]">
+            <div class="mb-14 relative">
+              <h1 class="text-[100px] font-black tracking-tighter italic leading-none bg-gradient-to-b from-white to-white/40 bg-clip-text text-transparent opacity-90">EPOCH</h1>
+              <div class="h-px w-24 bg-gradient-to-r from-past to-future mx-auto mt-6"></div>
+            </div>
+            
+            <div class="grid grid-cols-1 gap-3 w-full">
+              <button id="btnPlay" class="w-full bg-white text-[#0b0f22] font-bold py-5 rounded-2xl interactive-btn shadow-xl shadow-white/5 uppercase tracking-widest text-sm" type="button">Start Mission</button>
+              <div class="grid grid-cols-3 gap-3 w-full">
+                <button id="btnLevels" class="glass-card py-4 rounded-2xl interactive-btn font-bold text-[10px] uppercase tracking-widest border border-white/5" type="button">Logs</button>
+                <button id="btnSettings" class="glass-card py-4 rounded-2xl interactive-btn font-bold text-[10px] uppercase tracking-widest border border-white/5" type="button">Config</button>
+                <button id="btnAbout" class="glass-card py-4 rounded-2xl interactive-btn font-bold text-[10px] uppercase tracking-widest border border-white/5 opacity-60" type="button">Info</button>
+              </div>
+              <button id="btnHow" class="text-white/20 hover:text-white/50 text-[10px] py-4 uppercase tracking-[0.3em] font-black transition-all" type="button">Operations Guide</button>
+            </div>
+            
+            <p class="mt-12 text-[9px] text-white/10 uppercase tracking-[0.5em] font-black">
+              [A/D/L/R] Nav • [Space] Boost • [T] Shift
+            </p>
+          </div>
+        </section>
 
-        <div id="hud" class="panel hidden" aria-live="polite">
-          <div class="hud-left">
-            <div class="pill" id="hudLevel">Level 1</div>
-            <div class="pill" id="hudTimeline">Past</div>
+        <!-- Settings Screen -->
+        <section id="screenSettings" class="screen hidden w-full max-w-xl px-10 animate-slide-down" aria-hidden="true">
+          <div class="glass-card p-14 rounded-[3.5rem]">
+            <h2 class="text-3xl font-black mb-10 italic tracking-tighter uppercase text-white/90">System Config</h2>
+            <div class="space-y-8">
+              <div class="flex items-center justify-between group">
+                <div>
+                  <h3 class="font-bold text-lg text-white/90">Performance Mode</h3>
+                  <p class="text-white/30 text-[10px] uppercase font-black tracking-widest mt-1">Lighter visual load</p>
+                </div>
+                <button id="cfgPerf" class="w-14 h-8 bg-white/5 rounded-full relative border border-white/10 transition-all interactive-btn" type="button">
+                  <div class="absolute left-1 top-1 w-6 h-6 bg-white/10 rounded-full transition-all"></div>
+                </button>
+              </div>
+              <div class="flex items-center justify-between group">
+                <div>
+                  <h3 class="font-bold text-lg text-white/90">Screen Shake</h3>
+                  <p class="text-white/30 text-[10px] uppercase font-black tracking-widest mt-1">Impact feedback</p>
+                </div>
+                <button id="cfgShake" class="w-14 h-8 bg-white/20 rounded-full relative border border-white/20 transition-all interactive-btn" type="button">
+                  <div class="absolute right-1 top-1 w-6 h-6 bg-white rounded-full transition-all"></div>
+                </button>
+              </div>
+            </div>
+            <button id="btnSettingsBack" class="btn-primary mt-12 w-full" type="button">Save Changes</button>
           </div>
-          <div class="hud-right">
-            <div class="pill" id="hudTime">00:00.0</div>
-            <button class="btn ghost" id="btnPause" type="button">Menu</button>
+        </section>
+
+        <!-- Level Select -->
+        <section id="screenLevels" class="screen hidden w-full max-w-2xl px-8 animate-slide-down" aria-hidden="true">
+          <div class="glass-card p-12 rounded-[3.5rem] border-white/10">
+            <div class="flex items-center justify-between mb-10">
+              <div>
+                <h2 class="text-3xl font-black italic tracking-tighter uppercase text-white/90">Mission Logs</h2>
+                <p class="text-[9px] uppercase tracking-[0.3em] text-white/30 font-bold mt-1">Select temporal entry point</p>
+              </div>
+              <button id="btnLevelsBack" class="w-12 h-12 glass-card rounded-2xl flex items-center justify-center interactive-btn border border-white/5" type="button">
+                <svg class="w-5 h-5 text-white/40" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+              </button>
+            </div>
+            <div id="levelButtons" class="space-y-3 max-h-[50vh] overflow-y-auto pr-4 custom-scrollbar">
+              <!-- Dynamically filled -->
+            </div>
           </div>
+        </section>
+
+        <!-- About Screen -->
+        <section id="screenAbout" class="screen hidden w-full max-w-xl px-8 animate-slide-down" aria-hidden="true">
+          <div class="glass-card p-14 rounded-[3.5rem] border-white/10">
+            <h2 class="text-3xl font-black mb-8 italic tracking-tighter uppercase text-white/90">Protocol Info</h2>
+            <div class="space-y-6 text-white/50 text-sm leading-relaxed font-medium">
+              <p>EPOCH is a non-linear temporal simulation designed to test spatial awareness across synchronized timelines.</p>
+              <p>Objects in the <span class="text-past font-bold italic">Past</span> directly influence the topology of the <span class="text-future font-bold italic">Future</span>. Mastery of the Shift is required for mission success.</p>
+              <div class="pt-6 border-t border-white/5">
+                <p class="text-[10px] uppercase tracking-widest font-black text-white/20 mb-2 text-center">Development Signature</p>
+                <p class="text-center font-bold text-white/40 italic">ABHAY CHAUDHARY</p>
+              </div>
+            </div>
+            <button id="btnAboutBack" class="btn-primary mt-12 w-full" type="button">Acknowledge</button>
+          </div>
+        </section>
+
+        <!-- How to Play -->
+        <section id="screenHow" class="screen hidden w-full max-w-xl px-8 animate-slide-down" aria-hidden="true">
+          <div class="glass-card p-14 rounded-[3.5rem] border-white/10">
+            <h2 class="text-3xl font-black mb-10 italic tracking-tighter uppercase text-white/90">Field Manual</h2>
+            <div class="grid grid-cols-2 gap-8">
+              <div class="space-y-6">
+                <div class="group">
+                  <span class="text-[10px] font-black uppercase tracking-[0.3em] text-white/20 group-hover:text-past transition-colors">Movement</span>
+                  <p class="text-sm font-bold mt-1 text-white/70">[A/D] or [L/R] Arrows</p>
+                </div>
+                <div class="group">
+                  <span class="text-[10px] font-black uppercase tracking-[0.3em] text-white/20 group-hover:text-future transition-colors">Verticality</span>
+                  <p class="text-sm font-bold mt-1 text-white/70">[W] or [Space] or [UP]</p>
+                </div>
+              </div>
+              <div class="space-y-6">
+                <div class="group">
+                  <span class="text-[10px] font-black uppercase tracking-[0.3em] text-white/20 group-hover:text-past transition-colors">Temporal Shift</span>
+                  <p class="text-sm font-bold mt-1 text-white/70">[T] Key to switch timelines</p>
+                </div>
+                <div class="group">
+                  <span class="text-[10px] font-black uppercase tracking-[0.3em] text-white/20 group-hover:text-future transition-colors">Re-Sync</span>
+                  <p class="text-sm font-bold mt-1 text-white/70">[R] Key to restart level</p>
+                </div>
+              </div>
+            </div>
+            <button id="btnHowBack" class="btn-primary mt-12 w-full" type="button">Understood</button>
+          </div>
+        </section>
+
+        <!-- Pause Screen -->
+        <section id="screenPause" class="screen hidden w-full max-w-lg px-8 animate-slide-down" aria-hidden="true">
+          <div class="glass-card p-14 rounded-[3rem] text-center border-white/10 shadow-[0_0_80px_rgba(255,255,255,0.05)]">
+            <h2 class="text-5xl font-black mb-10 italic tracking-tighter uppercase text-white/90">Paused</h2>
+            <div class="space-y-4">
+              <button id="btnResume" class="btn-primary w-full" type="button">Continue Mission</button>
+              <button id="btnRestart" class="btn-secondary w-full" type="button">Reset Timeline</button>
+              <button id="btnPauseMenu" class="btn-ghost w-full uppercase tracking-widest text-[10px] font-black opacity-30 hover:opacity-100" type="button">Main Terminal</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Game Over / Complete -->
+        <section id="screenGameOver" class="screen hidden w-full max-w-lg px-8 animate-slide-down" aria-hidden="true">
+          <div class="glass-card p-14 rounded-[3rem] text-center border-red-500/10 shadow-[0_0_80px_rgba(239,68,68,0.1)]">
+            <h2 id="goTitle" class="text-5xl font-black mb-4 italic tracking-tighter uppercase text-white/90">Failed</h2>
+            <p id="goSubtitle" class="text-white/40 text-[11px] mb-12 uppercase tracking-widest leading-relaxed">System instability detected. Re-synchronize required.</p>
+            <div class="space-y-4">
+              <button id="btnGoRetry" class="btn-primary w-full" type="button">Re-Initialize</button>
+              <button id="btnGoMenu" class="btn-secondary w-full" type="button">Return to Terminal</button>
+            </div>
+          </div>
+        </section>
+
+      </main>
+
+      <!-- Background Cinematic Glows -->
+      <div id="glow-past" class="fixed inset-0 pointer-events-none z-0 glow-past opacity-30 transition-opacity duration-1000"></div>
+      <div id="glow-future" class="fixed inset-0 pointer-events-none z-0 glow-future opacity-5 transition-opacity duration-1000"></div>
+
+      <!-- Mobile Controls Overlay -->
+      <div id="mobileControls" class="fixed bottom-10 left-10 right-10 z-50 flex justify-between items-end pointer-events-none hidden" aria-hidden="true">
+        <div class="flex gap-4 pointer-events-auto">
+          <button id="mLeft" class="w-20 h-20 glass-card rounded-3xl flex items-center justify-center active:bg-white/10 transition-colors" type="button">
+            <svg class="w-8 h-8 opacity-40" fill="currentColor" viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+          </button>
+          <button id="mRight" class="w-20 h-20 glass-card rounded-3xl flex items-center justify-center active:bg-white/10 transition-colors" type="button">
+            <svg class="w-8 h-8 opacity-40" fill="currentColor" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+          </button>
         </div>
-
-        <div id="screenMenu" class="screen">
-          <div class="card">
-            <div class="title">Epoch</div>
-            <div class="subtitle">Switch timelines to solve platform puzzles.</div>
-            <div class="menuGrid">
-              <button class="btn primary" id="btnPlay" type="button">Play</button>
-              <button class="btn" id="btnLevels" type="button">Level Select</button>
-              <button class="btn" id="btnAbout" type="button">About</button>
-              <button class="btn ghost" id="btnHow" type="button">How to Play</button>
-            </div>
-            <div class="fineprint">
-              Controls: A/D or ←/→, Space to jump, <b>T</b> to time-shift. Mobile: use on-screen controls.
-            </div>
-          </div>
+        <div class="flex flex-col gap-4 pointer-events-auto items-end">
+          <button id="mTime" class="w-24 h-24 glass-card rounded-full border-2 border-white/20 flex items-center justify-center active:scale-90 transition-all shadow-[0_0_30px_rgba(255,255,255,0.1)]" type="button">
+            <div class="w-full h-full rounded-full bg-gradient-to-br from-past to-future opacity-20 absolute"></div>
+            <svg class="w-10 h-10 opacity-60" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+          </button>
+          <button id="mJump" class="w-20 h-20 glass-card rounded-3xl flex items-center justify-center active:bg-white/10 transition-colors" type="button">
+            <svg class="w-8 h-8 opacity-40" fill="currentColor" viewBox="0 0 24 24"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg>
+          </button>
         </div>
-
-        <div id="screenLevels" class="screen hidden" aria-hidden="true">
-          <div class="card">
-            <div class="title">Level Select</div>
-            <div id="levelButtons" class="levelGrid"></div>
-            <div class="row">
-              <button class="btn ghost" id="btnLevelsBack" type="button">Back</button>
-            </div>
-          </div>
-        </div>
-
-        <div id="screenAbout" class="screen hidden" aria-hidden="true">
-          <div class="card">
-            <div class="title">About Epoch</div>
-            <div class="aboutText">
-              <p>
-                <strong>Epoch</strong> is an atmospheric time-travel puzzle platformer that challenges you to think across dimensions. 
-                By shifting between the <em>Past</em> and the <em>Future</em>, you can manipulate objects, traverse broken bridges, and solve intricate environment puzzles.
-              </p>
-            </div>
-            <div class="row">
-              <button class="btn ghost" id="btnAboutBack" type="button">Back</button>
-            </div>
-          </div>
-        </div>
-
-        <div id="screenHow" class="screen hidden" aria-hidden="true">
-          <div class="card">
-            <div class="title">How to Play</div>
-            <div class="aboutText">
-              <ul>
-                <li><b>Move</b>: A/D or ←/→</li>
-                <li><b>Jump</b>: Space (or the jump button)</li>
-                <li><b>Time Shift</b>: T (or the time button) — past is warm, future is cool</li>
-                <li><b>Puzzles</b>: bridges, trees, switches, and movable boxes can differ per timeline</li>
-              </ul>
-            </div>
-            <div class="row">
-              <button class="btn ghost" id="btnHowBack" type="button">Back</button>
-            </div>
-          </div>
-        </div>
-
-        <div id="screenGameOver" class="screen hidden" aria-hidden="true">
-          <div class="card">
-            <div class="title" id="goTitle">Game Over</div>
-            <div class="aboutText" id="goSubtitle">
-              You fell out of time. Try the level again or return to the menu.
-            </div>
-            <div class="row" style="justify-content: space-between; gap: 10px">
-              <button class="btn ghost" id="btnGoMenu" type="button">Menu</button>
-              <button class="btn primary" id="btnGoRetry" type="button">Retry Level</button>
-            </div>
-          </div>
-        </div>
-
-        <footer id="mainFooter">
-          <div class="footerContent">
-            <div class="copyrightText">
-              &copy; <span id="copyrightYear"></span> Made by Abhay Chaudhary
-            </div>
-          </div>
-        </footer>
-
-        <div id="toast" class="toast hidden"></div>
       </div>
 
-      <div id="mobileControls" class="mobile hidden" aria-hidden="true">
-        <button class="mBtn" id="mLeft" type="button" aria-label="Move left">◀</button>
-        <button class="mBtn" id="mRight" type="button" aria-label="Move right">▶</button>
-        <button class="mBtn accent" id="mJump" type="button" aria-label="Jump">⤒</button>
-        <button class="mBtn ghost" id="mTime" type="button" aria-label="Time shift">T</button>
-      </div>
+      <!-- Footer / Info -->
+      <footer id="mainFooter" class="fixed bottom-8 left-8 right-8 z-30 flex justify-between items-end pointer-events-none animate-slide-down">
+        <div class="flex flex-col gap-1">
+          <span class="text-[9px] uppercase tracking-[0.4em] text-white/10 font-black">Epoch System V1.1.0</span>
+          <span class="text-[8px] uppercase tracking-[0.2em] text-white/5 font-bold">&copy; <span id="copyrightYear">2024</span> ALL RIGHTS RESERVED</span>
+        </div>
+        <div class="flex gap-8 pointer-events-auto">
+          <a href="#" class="text-[10px] uppercase tracking-widest font-black text-white/20 hover:text-white/60 transition-colors">Terminals</a>
+          <a href="#" class="text-[10px] uppercase tracking-widest font-black text-white/20 hover:text-white/60 transition-colors">Security</a>
+          <a href="#" class="text-[10px] uppercase tracking-widest font-black text-white/20 hover:text-white/60 transition-colors">Uptime</a>
+        </div>
+      </footer>
     </div>
 
-    <script type="module" src="./src/main.js"></script>
+    <!-- Screen-wide Toast -->
+    <div id="toast" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[100] glass-card px-10 py-5 rounded-3xl border-white/20 shadow-[0_0_100px_rgba(0,0,0,0.8)] text-sm font-bold tracking-widest uppercase italic hidden animate-float pointer-events-none">
+      SYSTEM MESSAGE
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
   </body>
 </html>
