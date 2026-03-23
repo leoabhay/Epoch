@@ -1,9 +1,9 @@
-import { Input } from "./input/Input.js";
+import { Input } from "./input/input.js";
 import { createAudio } from "./audio/audio.js";
 import { clamp, fmtTime, lerp } from "./util/math.js";
 import { Levels } from "../world/levels.js";
-import { World } from "../world/World.js";
-import { Renderer } from "../world/Renderer.js";
+import { World } from "../world/world.js";
+import { Renderer } from "../world/renderer.js";
 
 const STATE = {
   MENU: "menu",
