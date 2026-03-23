@@ -145,7 +145,7 @@ export function createUI() {
             <span class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-[10px] font-black border border-white/10 group-hover:bg-white/20 transition-all">${String(i + 1).padStart(2, '0')}</span>
             <div class="flex flex-col text-left">
               <span class="font-bold text-white/90 text-sm italic tracking-tighter uppercase">${lvl.name}</span>
-              <span class="text-[9px] uppercase tracking-[0.2em] text-white/20 font-black">Ready for Deployment</span>
+              <span class="text-[9px] uppercase tracking-[0.2em] text-white/20 font-black">Ready to play</span>
             </div>
           </div>
           <svg class="w-5 h-5 opacity-0 group-hover:opacity-40 transition-all translate-x-2 group-hover:translate-x-0" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
